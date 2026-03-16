@@ -1,0 +1,29 @@
+
+> foodbridge@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.26
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.8s
+ ○ Compiling /dashboard/donor ...
+ ✓ Compiled /dashboard/donor in 8.6s (790 modules)
+ GET /dashboard/donor 307 in 9101ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 5.1s (814 modules)
+ GET /login 200 in 5507ms
+ GET /dashboard/donor 200 in 528ms
+ GET /dashboard/donor? 200 in 191ms
+ ○ Compiling / ...
+ ✓ Compiled / in 9.7s (1511 modules)
+ ○ Compiling /login ...
+ ✓ Compiled /login in 606ms (818 modules)
+ ○ Compiling /signup ...
+ ✓ Compiled /signup in 2.2s (1548 modules)
+ POST /dashboard/donor 303 in 369ms
+ POST /login 303 in 110ms
+ POST /dashboard/donor 303 in 185ms
+ ○ Compiling /impact ...
+ ✓ Compiled /signup in 5.3s (1582 modules)

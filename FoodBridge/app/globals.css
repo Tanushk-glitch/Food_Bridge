@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 33% 99%;
+    --foreground: 215 28% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 28% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+    --primary: 147 38% 37%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 38 100% 95%;
+    --secondary-foreground: 24 73% 25%;
+    --muted: 210 30% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 25 95% 35%;
+    --accent-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 147 38% 37%;
+    --success: 147 38% 37%;
+    --warning: 25 95% 53%;
+    --chart-1: 147 38% 37%;
+    --chart-2: 25 95% 53%;
+    --chart-3: 201 94% 60%;
+    --chart-4: 260 84% 66%;
+  }
+
+  .dark {
+    --background: 150 20% 5%;
+    --foreground: 210 40% 96%;
+    --card: 150 20% 8%;
+    --card-foreground: 210 40% 96%;
+    --popover: 150 20% 8%;
+    --popover-foreground: 210 40% 96%;
+    --primary: 147 38% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 25 43% 14%;
+    --secondary-foreground: 34 100% 82%;
+    --muted: 150 15% 14%;
+    --muted-foreground: 217 19% 70%;
+    --accent: 25 95% 45%;
+    --accent-foreground: 0 0% 100%;
+    --border: 150 12% 18%;
+    --input: 150 12% 18%;
+    --ring: 147 38% 42%;
+    --success: 147 38% 42%;
+    --warning: 25 95% 53%;
+    --chart-1: 147 38% 42%;
+    --chart-2: 25 95% 53%;
+    --chart-3: 201 94% 60%;
+    --chart-4: 260 84% 66%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .radial-glow {
+    background: radial-gradient(
+      circle at top right,
+      rgba(58, 130, 78, 0.08) 0%,
+      rgba(180, 83, 9, 0.05) 50%,
+      transparent 100%
+    );
+  }
+
+  .dark .radial-glow {
+    background: radial-gradient(
+      circle at top right,
+      rgba(58, 130, 78, 0.15) 0%,
+      rgba(180, 83, 9, 0.08) 50%,
+      transparent 100%
+    );
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

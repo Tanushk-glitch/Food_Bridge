@@ -1,0 +1,22 @@
+components/delivery-dashboard-client.tsx(30,81): error TS2554: Expected 1 arguments, but got 0.
+components/delivery-dashboard-client.tsx(30,81): error TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+components/delivery-dashboard-client.tsx(61,39): error TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+components/delivery-dashboard-client.tsx(61,47): error TS2345: Argument of type 'Map<string, string>' is not assignable to parameter of type 'Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>'.
+  Type 'Map<string, string>' is not assignable to type 'Omit<LucideProps, "ref">'.
+    Types of property 'values' are incompatible.
+      Type '() => MapIterator<string>' is not assignable to type 'string'.
+components/delivery-dashboard-client.tsx(65,26): error TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+components/delivery-dashboard-client.tsx(65,34): error TS2345: Argument of type 'Map<string, string>' is not assignable to parameter of type 'Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>'.
+  Type 'Map<string, string>' is not assignable to type 'Omit<LucideProps, "ref">'.
+    Types of property 'values' are incompatible.
+      Type '() => MapIterator<string>' is not assignable to type 'string'.
+components/delivery-dashboard-client.tsx(88,39): error TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+components/delivery-dashboard-client.tsx(88,47): error TS2345: Argument of type 'Map<string, string>' is not assignable to parameter of type 'Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>'.
+  Type 'Map<string, string>' is not assignable to type 'Omit<LucideProps, "ref">'.
+    Types of property 'values' are incompatible.
+      Type '() => MapIterator<string>' is not assignable to type 'string'.
+components/delivery-dashboard-client.tsx(92,26): error TS7009: 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+components/delivery-dashboard-client.tsx(92,34): error TS2345: Argument of type 'Map<string, string>' is not assignable to parameter of type 'Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>'.
+  Type 'Map<string, string>' is not assignable to type 'Omit<LucideProps, "ref">'.
+    Types of property 'values' are incompatible.
+      Type '() => MapIterator<string>' is not assignable to type 'string'.
