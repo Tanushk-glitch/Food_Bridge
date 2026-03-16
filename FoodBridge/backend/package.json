@@ -1,0 +1,15 @@
+{
+  "name": "foodbridge-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "npx prisma generate --schema ../database/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema ../database/prisma/schema.prisma"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "prisma": "^6.5.0"
+  }
+}

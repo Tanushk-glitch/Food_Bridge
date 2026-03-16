@@ -1,7 +1,12 @@
 .next
+frontend/.next
 node_modules
 .env
 .env.local
 dist
 coverage
-prisma/dev.db
+database/prisma/dev.db
+frontend/.env
+frontend/.env.local
+backend/.env
+backend/.env.local

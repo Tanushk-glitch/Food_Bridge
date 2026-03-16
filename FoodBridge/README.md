@@ -1,52 +1,52 @@
 # FoodBridge
 
-FoodBridge is a modern full-stack prototype built for a hackathon demo. It connects restaurants, NGOs, delivery partners, and admins around one food redistribution workflow.
+FoodBridge is organized into clear application layers:
+
+- `frontend/` - Next.js UI
+- `backend/` - Node.js API server
+- `database/` - Prisma schema and migrations
+
+It connects restaurants, NGOs, delivery partners, and admins around one food redistribution workflow.
 
 ## Stack
 
 - Next.js 14 App Router
 - TypeScript
+- Node.js HTTP API
 - Tailwind CSS
 - shadcn/ui-style local components
 - Lucide icons
 - Framer Motion-ready UI patterns
 - Prisma ORM
-- PostgreSQL
+- SQLite
 - Google Maps API integration point
-
-## Pages
-
-- `/` landing page
-- `/restaurant`
-- `/ngo`
-- `/delivery`
-- `/impact`
-- `/admin`
 
 ## Setup
 
 1. Install dependencies with `npm install`
-2. Add `.env` with:
-
-```env
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/foodbridge"
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your-key"
-```
-
+2. Configure environment files:
+   - `frontend/.env`
+   - `backend/.env`
 3. Generate Prisma client:
 
 ```bash
 npm run prisma:generate
 ```
 
-4. Run the app:
+4. Run the backend:
 
 ```bash
-npm run dev
+npm run dev:backend
+```
+
+5. Run the frontend:
+
+```bash
+npm run dev:frontend
 ```
 
 ## Notes
 
-- The project ships with rich demo data for dashboards.
-- `app/api/donations/route.ts` exposes sample donation data for frontend demos.
-- `components/ui/interactive-map.tsx` is styled as a Google Maps-ready shell for quick API wiring.
+- The frontend proxies `/api/*` requests to the backend via `frontend/next.config.mjs`.
+- Prisma schema and migrations live in `database/prisma`.
+- `frontend/components/ui/interactive-map.tsx` is styled as a Google Maps-ready shell for quick API wiring.
