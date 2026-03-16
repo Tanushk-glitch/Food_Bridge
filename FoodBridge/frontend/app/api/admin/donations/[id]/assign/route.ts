@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { adminService } from "@/lib/services/adminService";
 import { requireAdminSession } from "@/lib/services/requireAdmin";
+import { acceptDonationForNgo, demoDataEnabled } from "@/lib/demo-data";
 
 const assignSchema = z.object({
   ngoId: z.string().min(1),
@@ -20,6 +21,14 @@ export async function PATCH(request: Request, context: { params: { id: string } 
   }
 
   try {
+    if (demoDataEnabled()) {
+      const donation = acceptDonationForNgo(context.params.id, parsed.data.ngoId);
+      if (!donation) {
+        return NextResponse.json({ error: "Donation not found" }, { status: 404 });
+      }
+      return NextResponse.json({ ok: true, donation }, { status: 200 });
+    }
+
     const donation = await adminService.assignDonationNgo(context.params.id, parsed.data.ngoId);
     return NextResponse.json({ ok: true, donation }, { status: 200 });
   } catch (error) {

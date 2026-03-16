@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { adminService } from "@/lib/services/adminService";
 import { requireAdminSession } from "@/lib/services/requireAdmin";
+import { demoDataEnabled, listAdminUsers } from "@/lib/demo-data";
 
 export async function GET() {
   if (!requireAdminSession()) {
@@ -9,6 +10,10 @@ export async function GET() {
   }
 
   try {
+    if (demoDataEnabled()) {
+      return NextResponse.json({ users: listAdminUsers() }, { status: 200 });
+    }
+
     const users = await adminService.listUsers();
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
@@ -16,4 +21,3 @@ export async function GET() {
     return NextResponse.json({ error: "Failed to load users" }, { status: 500 });
   }
 }
-
