@@ -21,6 +21,7 @@ export function SignupForm({ initialRole = null }: SignupFormProps) {
   const [currentStep, setCurrentStep] = useState<"details" | "otp">("details");
   const [pendingData, setPendingData] = useState<Record<string, string> | null>(null);
   const [otp, setOtp] = useState("");
+  const [devCode, setDevCode] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -62,6 +63,7 @@ export function SignupForm({ initialRole = null }: SignupFormProps) {
       return;
     }
 
+    setDevCode(typeof data.devCode === "string" ? data.devCode : "");
     setPendingData(
       Object.fromEntries(
         Object.entries(payload).filter(([, value]) => typeof value === "string" && value)
@@ -186,6 +188,9 @@ export function SignupForm({ initialRole = null }: SignupFormProps) {
                   <div className="rounded-2xl border border-border bg-muted/40 p-4 text-sm">
                     <p className="font-semibold">We sent a 5-digit code to {pendingData?.email}.</p>
                     <p className="text-muted-foreground">Enter it below to verify your email and continue.</p>
+                    {devCode && (
+                      <p className="mt-2 font-semibold text-foreground">Dev OTP: {devCode}</p>
+                    )}
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium">Verification code</label>

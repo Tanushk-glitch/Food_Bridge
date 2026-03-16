@@ -3,19 +3,23 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  role      String     // DONOR, NGO, DELIVERY, ADMIN
-  location  String?
-  createdAt DateTime   @default(now())
-  donations Donation[] @relation("DonorDonations")
-  claims    Donation[] @relation("NgoClaims")
+  id               String     @id @default(cuid())
+  name             String
+  email            String     @unique
+  role             String     // DONOR, NGO, DELIVERY, ADMIN
+  location         String?
+  phone            String?
+  organizationName String?
+  passwordHash     String?
+  passwordSalt     String?
+  createdAt        DateTime   @default(now())
+  donations        Donation[] @relation("DonorDonations")
+  claims           Donation[] @relation("NgoClaims")
 }
 
 model Donation {
