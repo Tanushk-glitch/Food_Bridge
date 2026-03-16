@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:4000";
+function normalizeBackendUrl(value: string | undefined) {
+  const trimmed = String(value || "").trim().replace(/\/+$/, "");
+  if (!trimmed) return "http://localhost:4000";
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  return `https://${trimmed}`;
+}
+
+const backendUrl = normalizeBackendUrl(process.env.BACKEND_URL);
 
 export async function POST(request: Request) {
   const payload = await request.json();

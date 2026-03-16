@@ -6,7 +6,14 @@ import { createSessionToken, setSession } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/roles";
 import { prisma } from "@/lib/prisma";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:4000";
+function normalizeBackendUrl(value: string | undefined) {
+  const trimmed = String(value || "").trim().replace(/\/+$/, "");
+  if (!trimmed) return "http://localhost:4000";
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  return `https://${trimmed}`;
+}
+
+const backendUrl = normalizeBackendUrl(process.env.BACKEND_URL);
 
 const verifyOtpSchema = z.object({
   email: z.string().email(),

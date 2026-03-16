@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    const backendUrl = process.env.BACKEND_URL || "http://localhost:4000";
+    const rawBackendUrl = process.env.BACKEND_URL || "http://localhost:4000";
+    const backendUrl = (() => {
+      const trimmed = String(rawBackendUrl || "").trim().replace(/\/+$/, "");
+      if (!trimmed) return "http://localhost:4000";
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+      return `https://${trimmed}`;
+    })();
 
     return [
       {
