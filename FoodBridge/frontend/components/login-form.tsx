@@ -7,7 +7,7 @@ import { ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { publicRoles, roleContent, type UserRole } from "@/lib/roles";
+import { isAdminEmail, publicRoles, roleContent, type UserRole } from "@/lib/roles";
 
 type LoginFormProps = {
   initialRole?: UserRole;
@@ -24,9 +24,9 @@ export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
     setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
-    const role = String(formData.get("role") || "donor") as UserRole;
     const email = String(formData.get("email") || "").trim();
     const password = String(formData.get("password") || "");
+    const role = (isAdminEmail(email) ? "admin" : String(formData.get("role") || "donor")) as UserRole;
 
     const response = await fetch("/api/auth/login", {
       method: "POST",
@@ -39,6 +39,11 @@ export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
     if (!response.ok) {
       setError(data.error || "Unable to log in. Please try again.");
       setIsSubmitting(false);
+      return;
+    }
+
+    if (isAdminEmail(email)) {
+      router.push("/dashboard/admin");
       return;
     }
 
@@ -96,8 +101,8 @@ export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
           The admin dashboard stays off the public signup flow. Use an admin email to open the operations console.
         </p>
         <div className="mt-6 space-y-4 text-sm font-medium text-background/60">
-          <p>Demo tip: any email containing the word &ldquo;admin&rdquo; will route to the admin dashboard after login.</p>
-          <p>Example: <span className="font-extrabold text-background">ops-admin@foodbridge.org</span></p>
+          <p>Demo tip: use the admin email to open the admin dashboard after login.</p>
+          <p>Example: <span className="font-extrabold text-background">admin@gmail.com</span></p>
         </div>
       </div>
     </div>

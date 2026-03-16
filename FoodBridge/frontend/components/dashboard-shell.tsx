@@ -39,7 +39,7 @@ const linkGroups: Record<UserRole, DashboardNavItem[]> = {
     { href: "/impact", label: "Impact", icon: LayoutDashboard }
   ],
   admin: [
-    { href: "/admin", label: "Admin Console", icon: ShieldCheck },
+    { href: "/dashboard/admin", label: "Admin Console", icon: ShieldCheck },
     { href: "/impact", label: "Impact", icon: LayoutDashboard }
   ]
 };

@@ -10,6 +10,9 @@ const { activeDonations } = require("./demo-data");
 const { sendMail } = require("./mailer");
 const { createOtp, verifyOtp, isValidRole, normalizeEmail } = require("./otp-store");
 
+const FIXED_ADMIN_EMAIL = normalizeEmail(config.admin?.email);
+const FIXED_ADMIN_PASSWORD = String(config.admin?.password || "");
+
 function sendJson(res, statusCode, payload) {
   res.writeHead(statusCode, {
     "Content-Type": "application/json",
@@ -40,6 +43,32 @@ function verifyPassword(password, salt, hash) {
   }
   const derived = crypto.scryptSync(String(password || ""), String(salt), 64);
   return crypto.timingSafeEqual(Buffer.from(String(hash), "hex"), derived);
+}
+
+async function ensureFixedAdminAccount() {
+  if (!FIXED_ADMIN_EMAIL || !FIXED_ADMIN_PASSWORD) {
+    return;
+  }
+
+  const { salt, hash } = hashPassword(FIXED_ADMIN_PASSWORD);
+
+  await prisma.user.upsert({
+    where: { email: FIXED_ADMIN_EMAIL },
+    update: {
+      name: "Admin",
+      role: "ADMIN",
+      passwordHash: hash,
+      passwordSalt: salt,
+    },
+    create: {
+      id: FIXED_ADMIN_EMAIL,
+      name: "Admin",
+      email: FIXED_ADMIN_EMAIL,
+      role: "ADMIN",
+      passwordHash: hash,
+      passwordSalt: salt,
+    },
+  });
 }
 
 async function readJsonBody(req) {
@@ -123,6 +152,7 @@ async function createDonation(res, body) {
     const donation = await prisma.donation.create({
       data: {
         foodType,
+        foodTitle: foodType,
         quantity,
         expiryTime,
         location,
@@ -130,6 +160,17 @@ async function createDonation(res, body) {
         donorId,
       },
     });
+
+    try {
+      await prisma.activityLog.create({
+        data: {
+          type: "DONATION_POSTED",
+          message: `Donation posted by ${donorId} (${donation.id}).`,
+        },
+      });
+    } catch (error) {
+      console.warn("Failed to write activity log (DONATION_POSTED):", error);
+    }
 
     try {
       await sendMail({
@@ -168,17 +209,43 @@ async function acceptDonation(res, body) {
       },
     });
 
+    const ngoUser = await prisma.user.findUnique({
+      where: { email: ngoId },
+      select: { verified: true, status: true },
+    });
+
+    if (!ngoUser) {
+      sendJson(res, 404, { error: "NGO account not found" });
+      return;
+    }
+
+    if (String(ngoUser.status || "").toLowerCase() === "suspended") {
+      sendJson(res, 403, { error: "NGO account is suspended" });
+      return;
+    }
+
+    if (!ngoUser.verified) {
+      sendJson(res, 403, { error: "NGO must be verified by admin before accepting donations." });
+      return;
+    }
+
     const donation = await prisma.donation.update({
       where: { id: donationId },
       data: {
         status: "NGO_ACCEPTED",
         ngoId,
       },
+      select: {
+        id: true,
+        donorId: true,
+        ngoId: true,
+        status: true,
+      },
     });
 
     try {
       await sendMail({
-        to: donorId,
+        to: donation.donorId,
         subject: "Your donation was accepted",
         text: `Good news! An NGO accepted your donation.\n\nDonation ID: ${donationId}\nNGO: ${ngoId}`,
       });
@@ -189,6 +256,17 @@ async function acceptDonation(res, body) {
       });
     } catch (error) {
       console.warn("Failed to send acceptance email:", error);
+    }
+
+    try {
+      await prisma.activityLog.create({
+        data: {
+          type: "DONATION_CLAIMED",
+          message: `Donation ${donationId} claimed by NGO ${ngoId}.`,
+        },
+      });
+    } catch (error) {
+      console.warn("Failed to write activity log (DONATION_CLAIMED):", error);
     }
 
     sendJson(res, 200, { donation });
@@ -211,6 +289,26 @@ async function updateStatus(res, body, status, logMessage, responseMessage) {
       where: { id: donationId },
       data: { status },
     });
+
+    try {
+      const type =
+        status === "DELIVERED"
+          ? "DONATION_DELIVERED"
+          : status === "PICKED_UP"
+            ? "DONATION_PICKED_UP"
+            : status === "DELIVERY_ACCEPTED"
+              ? "DELIVERY_ACCEPTED"
+              : "DONATION_STATUS_UPDATED";
+
+      await prisma.activityLog.create({
+        data: {
+          type,
+          message: `Donation ${donationId} updated to ${status}.`,
+        },
+      });
+    } catch (error) {
+      console.warn("Failed to write activity log (DONATION_STATUS_UPDATED):", error);
+    }
 
     sendJson(res, 200, { donation });
   } catch (error) {
@@ -269,8 +367,18 @@ async function requestOtp(res, body) {
     return;
   }
 
+  if (email === FIXED_ADMIN_EMAIL) {
+    sendJson(res, 403, { error: "Admin account uses password login only." });
+    return;
+  }
+
   if (!isValidRole(role)) {
     sendJson(res, 400, { error: "Invalid role" });
+    return;
+  }
+
+  if (role === "admin") {
+    sendJson(res, 403, { error: "Admin account uses password login only." });
     return;
   }
 
@@ -326,8 +434,18 @@ async function verifyOtpCode(res, body) {
     return;
   }
 
+  if (email === FIXED_ADMIN_EMAIL) {
+    sendJson(res, 403, { error: "Admin account uses password login only." });
+    return;
+  }
+
   if (!isValidRole(role)) {
     sendJson(res, 400, { error: "Invalid role" });
+    return;
+  }
+
+  if (role === "admin") {
+    sendJson(res, 403, { error: "Admin account uses password login only." });
     return;
   }
 
@@ -385,11 +503,17 @@ async function verifyOtpCode(res, body) {
 
 async function loginWithPassword(res, body) {
   const email = normalizeEmail(body.email);
-  const role = String(body.role || "");
+  const isFixedAdmin = email && email === FIXED_ADMIN_EMAIL;
+  const role = isFixedAdmin ? "admin" : String(body.role || "");
   const password = String(body.password || "");
 
   if (!email || !password) {
     sendJson(res, 400, { error: "Email and password are required" });
+    return;
+  }
+
+  if (!isFixedAdmin && String(role || "").toLowerCase() === "admin") {
+    sendJson(res, 403, { error: "Admin access is restricted to the fixed admin account." });
     return;
   }
 
@@ -540,6 +664,16 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(config.port, () => {
-  console.log(`FoodBridge backend listening on http://localhost:${config.port}`);
-});
+async function bootstrap() {
+  try {
+    await ensureFixedAdminAccount();
+  } catch (error) {
+    console.error("Failed to ensure fixed admin account:", error);
+  }
+
+  server.listen(config.port, () => {
+    console.log(`FoodBridge backend listening on http://localhost:${config.port}`);
+  });
+}
+
+bootstrap();

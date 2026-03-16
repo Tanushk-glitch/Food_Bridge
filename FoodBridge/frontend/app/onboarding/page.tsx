@@ -85,7 +85,7 @@ export default function OnboardingPage() {
   }
 
   if (session.role === "admin") {
-    redirect("/admin");
+    redirect("/dashboard/admin");
   }
 
   return (

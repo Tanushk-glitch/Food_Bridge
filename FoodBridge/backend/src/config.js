@@ -53,6 +53,10 @@ if (dbUrl.startsWith("file:")) {
 const config = {
   port: Number(process.env.PORT || 4000),
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000",
+  admin: {
+    email: process.env.ADMIN_EMAIL || "admin@gmail.com",
+    password: process.env.ADMIN_PASSWORD || "admin@123",
+  },
   smtp: {
     enabled: (process.env.SMTP_ENABLED || "").toLowerCase() === "true",
     host: process.env.SMTP_HOST || "",

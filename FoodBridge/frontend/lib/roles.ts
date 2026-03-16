@@ -1,5 +1,7 @@
 export type UserRole = "donor" | "ngo" | "delivery" | "admin";
 
+const ADMIN_EMAILS = new Set(["admin@gmail.com"]);
+
 export const roleContent = {
   donor: {
     label: "Restaurant / Individual Donor",
@@ -23,7 +25,7 @@ export const roleContent = {
     label: "Admin",
     shortLabel: "Admin",
     description: "Restricted monitoring and operations access",
-    dashboardPath: "/admin"
+    dashboardPath: "/dashboard/admin"
   }
 } satisfies Record<UserRole, { label: string; shortLabel: string; description: string; dashboardPath: string }>;
 
@@ -31,6 +33,14 @@ export const publicRoles: UserRole[] = ["donor", "ngo", "delivery"];
 
 export function isUserRole(value: string | null | undefined): value is UserRole {
   return value === "donor" || value === "ngo" || value === "delivery" || value === "admin";
+}
+
+export function isAdminEmail(email: string | null | undefined) {
+  if (!email) {
+    return false;
+  }
+
+  return ADMIN_EMAILS.has(email.trim().toLowerCase());
 }
 
 export function getDashboardPath(role: UserRole) {

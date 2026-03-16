@@ -1,6 +1,6 @@
 require("./config");
 
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../../database/generated/client");
 
 const globalForPrisma = globalThis;
 const prisma = globalForPrisma.__foodbridgePrisma || new PrismaClient({ log: ["error"] });

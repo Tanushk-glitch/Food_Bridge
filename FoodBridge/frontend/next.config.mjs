@@ -5,8 +5,20 @@ const nextConfig = {
 
     return [
       {
-        source: "/api/:path*",
-        destination: `${backendUrl}/api/:path*`,
+        source: "/api/donations/:path*",
+        destination: `${backendUrl}/api/donations/:path*`,
+      },
+      {
+        source: "/api/delivery/:path*",
+        destination: `${backendUrl}/api/delivery/:path*`,
+      },
+      {
+        source: "/api/auth/request-otp",
+        destination: `${backendUrl}/api/auth/request-otp`,
+      },
+      {
+        source: "/api/auth/verify-otp",
+        destination: `${backendUrl}/api/auth/verify-otp`,
       },
     ];
   },
