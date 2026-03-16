@@ -473,3 +473,591 @@
 [0]   meta: { modelName: 'Donation', table: 'main.Donation' },
 [0]   clientVersion: '6.19.2'
 [0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
+[0] prisma:error 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0] Error fetching donor donations: PrismaClientKnownRequestError: 
+[0] Invalid `prisma.donation.findMany()` invocation in
+[0] C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:45
+[0] 
+[0]   67   return;
+[0]   68 }
+[0]   69 
+[0] → 70 const donations = await prisma.donation.findMany(
+[0] The table `main.Donation` does not exist in the current database.
+[0]     at ei.handleRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:7268)
+[0]     at ei.handleAndLogRequestError (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6593)
+[0]     at ei.request (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:121:6300)
+[0]     at async a (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\node_modules\@prisma\client\runtime\library.js:130:9551)
+[0]     at async getDonorDonations (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:70:23)
+[0]     at async Server.<anonymous> (C:\Yash\Hackthon\meal mission\Foodbirge\Food_Bridge\FoodBridge\backend\src\server.js:240:7) {
+[0]   code: 'P2021',
+[0]   meta: { modelName: 'Donation', table: 'main.Donation' },
+[0]   clientVersion: '6.19.2'
+[0] }
