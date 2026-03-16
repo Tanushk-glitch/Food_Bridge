@@ -1,22 +1,9 @@
-import { redirect } from "next/navigation";
-
 import { DonorDashboardView } from "@/components/donor-dashboard-view";
-import { getSession } from "@/lib/auth";
+
+import { requireDonorSession } from "./require-donor-session";
 
 export default function DonorDashboardPage() {
-  const session = getSession();
-
-  if (!session) {
-    redirect("/login");
-  }
-
-  if (session.role !== "donor") {
-    redirect(session.onboardingCompleted ? "/dashboard" : "/onboarding");
-  }
-
-  if (!session.onboardingCompleted) {
-    redirect("/onboarding");
-  }
+  const session = requireDonorSession();
 
   return <DonorDashboardView session={session} />;
 }
