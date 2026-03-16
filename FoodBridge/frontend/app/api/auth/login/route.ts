@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { createSessionToken, setSession } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/roles";
+import { getDemoPersonaEmail } from "@/lib/demo-data";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -109,13 +110,14 @@ export async function POST(request: Request) {
     if (demoLoginEnabled) {
       const uiRole = email.includes("admin") ? "admin" : String(parsed.data.role || "donor");
       const dbRole = toDbRole(uiRole) as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
+      const effectiveEmail = getDemoPersonaEmail(uiRole as "admin" | "donor" | "ngo" | "delivery");
 
       const session = {
-        userId: email,
+        userId: effectiveEmail,
         dbRole,
         role: toUiRole(dbRole),
-        name: email.split("@")[0] || "User",
-        email,
+        name: effectiveEmail.split("@")[0] || "User",
+        email: effectiveEmail,
         phone: "",
         password: "",
         organizationName: "",

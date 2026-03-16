@@ -347,3 +347,9 @@ export function createDonation(input: {
   return donation;
 }
 
+export function getDemoPersonaEmail(role: "admin" | "donor" | "ngo" | "delivery") {
+  if (role === "admin") return "admin@gmail.com";
+  if (role === "ngo") return "ngo.asha@foodbridge.dev";
+  if (role === "delivery") return "delivery.rahul@foodbridge.dev";
+  return "donor.royal@foodbridge.dev";
+}
