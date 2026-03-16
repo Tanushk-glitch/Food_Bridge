@@ -87,6 +87,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -168,6 +171,11 @@ exports.Prisma.NullableJsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -177,11 +185,6 @@ exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
 };
 exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN',
@@ -254,7 +257,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
   "postinstall": false,
   "inlineDatasources": {
     "db": {
@@ -264,8 +267,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum UserRole {\n  ADMIN\n  DONOR\n  NGO\n  DELIVERY\n}\n\nenum UserStatus {\n  active\n  suspended\n}\n\nenum ReportStatus {\n  open\n  reviewing\n  resolved\n}\n\nenum NotificationTargetRole {\n  DONOR\n  NGO\n  DELIVERY\n  ALL\n}\n\nmodel User {\n  id                 String     @id @default(cuid())\n  name               String\n  email              String     @unique\n  role               UserRole // ADMIN, DONOR, NGO, DELIVERY\n  location           String?\n  city               String?\n  verified           Boolean    @default(false)\n  status             UserStatus @default(active)\n  phone              String?\n  organizationName   String?\n  passwordHash       String? // legacy (scrypt)\n  passwordSalt       String? // legacy (scrypt)\n  passwordHashBcrypt String?    @map(\"password_hash\")\n  createdAt          DateTime   @default(now())\n  donations          Donation[] @relation(\"DonorDonations\")\n  claims             Donation[] @relation(\"NgoClaims\")\n  reports            Report[]\n}\n\nmodel Donation {\n  id           String   @id @default(cuid())\n  foodType     String\n  foodTitle    String?  @map(\"food_title\")\n  quantity     String\n  expiryTime   String\n  location     String\n  pickupStatus String?  @map(\"pickup_status\")\n  status       String   @default(\"POSTED\") // posted, claimed, pickup_in_progress, delivered, cancelled (legacy values may exist)\n  locationLat  Float?   @map(\"location_lat\")\n  locationLng  Float?   @map(\"location_lng\")\n  donorId      String\n  ngoId        String?\n  createdAt    DateTime @default(now())\n  donor        User     @relation(\"DonorDonations\", fields: [donorId], references: [id])\n  ngo          User?    @relation(\"NgoClaims\", fields: [ngoId], references: [id])\n  reports      Report[]\n}\n\nmodel Report {\n  id          String       @id @default(cuid())\n  donationId  String       @map(\"donation_id\")\n  reportedBy  String       @map(\"reported_by\")\n  description String\n  status      ReportStatus @default(open)\n  createdAt   DateTime     @default(now()) @map(\"created_at\")\n\n  donation Donation @relation(fields: [donationId], references: [id])\n  reporter User     @relation(fields: [reportedBy], references: [id])\n}\n\nmodel ActivityLog {\n  id        String   @id @default(cuid())\n  type      String\n  message   String\n  createdAt DateTime @default(now()) @map(\"created_at\")\n}\n\nmodel Notification {\n  id         String                 @id @default(cuid())\n  title      String\n  message    String\n  targetRole NotificationTargetRole @map(\"target_role\")\n  createdAt  DateTime               @default(now()) @map(\"created_at\")\n}\n\nmodel OtpCode {\n  id        String   @id @default(cuid())\n  email     String\n  role      String\n  intent    String\n  code      String\n  profile   Json?\n  expiresAt DateTime @map(\"expires_at\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n\n  @@unique([email, role, intent])\n  @@index([expiresAt])\n}\n",
-  "inlineSchemaHash": "1131fdede070a72f8f0e024117d3a1ef53155ae3d940acc542905661645ec7c7",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nenum UserRole {\n  ADMIN\n  DONOR\n  NGO\n  DELIVERY\n}\n\nenum UserStatus {\n  active\n  suspended\n}\n\nenum ReportStatus {\n  open\n  reviewing\n  resolved\n}\n\nenum NotificationTargetRole {\n  DONOR\n  NGO\n  DELIVERY\n  ALL\n}\n\nmodel User {\n  id                 String     @id @default(cuid())\n  name               String\n  email              String     @unique\n  role               UserRole // ADMIN, DONOR, NGO, DELIVERY\n  location           String?\n  city               String?\n  verified           Boolean    @default(false)\n  status             UserStatus @default(active)\n  phone              String?\n  organizationName   String?\n  passwordHash       String? // legacy (scrypt)\n  passwordSalt       String? // legacy (scrypt)\n  passwordHashBcrypt String?    @map(\"password_hash\")\n  createdAt          DateTime   @default(now())\n  donations          Donation[] @relation(\"DonorDonations\")\n  claims             Donation[] @relation(\"NgoClaims\")\n  reports            Report[]\n}\n\nmodel Donation {\n  id           String   @id @default(cuid())\n  foodType     String\n  foodTitle    String?  @map(\"food_title\")\n  quantity     String\n  expiryTime   String\n  location     String\n  pickupStatus String?  @map(\"pickup_status\")\n  status       String   @default(\"POSTED\") // posted, claimed, pickup_in_progress, delivered, cancelled (legacy values may exist)\n  locationLat  Float?   @map(\"location_lat\")\n  locationLng  Float?   @map(\"location_lng\")\n  donorId      String\n  ngoId        String?\n  createdAt    DateTime @default(now())\n  donor        User     @relation(\"DonorDonations\", fields: [donorId], references: [id])\n  ngo          User?    @relation(\"NgoClaims\", fields: [ngoId], references: [id])\n  reports      Report[]\n}\n\nmodel Report {\n  id          String       @id @default(cuid())\n  donationId  String       @map(\"donation_id\")\n  reportedBy  String       @map(\"reported_by\")\n  description String\n  status      ReportStatus @default(open)\n  createdAt   DateTime     @default(now()) @map(\"created_at\")\n\n  donation Donation @relation(fields: [donationId], references: [id])\n  reporter User     @relation(fields: [reportedBy], references: [id])\n}\n\nmodel ActivityLog {\n  id        String   @id @default(cuid())\n  type      String\n  message   String\n  createdAt DateTime @default(now()) @map(\"created_at\")\n}\n\nmodel Notification {\n  id         String                 @id @default(cuid())\n  title      String\n  message    String\n  targetRole NotificationTargetRole @map(\"target_role\")\n  createdAt  DateTime               @default(now()) @map(\"created_at\")\n}\n\nmodel OtpCode {\n  id        String   @id @default(cuid())\n  email     String\n  role      String\n  intent    String\n  code      String\n  profile   Json?\n  expiresAt DateTime @map(\"expires_at\")\n  createdAt DateTime @default(now()) @map(\"created_at\")\n\n  @@unique([email, role, intent])\n  @@index([expiresAt])\n}\n",
+  "inlineSchemaHash": "e47eadd6bb5ec35c50b8da1fd788580ce67bca3c65641055f2e57a95148c7667",
   "copyEngine": true
 }
 config.dirname = '/'
