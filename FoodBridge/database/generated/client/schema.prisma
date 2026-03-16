@@ -98,3 +98,17 @@ model Notification {
   targetRole NotificationTargetRole @map("target_role")
   createdAt  DateTime               @default(now()) @map("created_at")
 }
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  email     String
+  role      String
+  intent    String
+  code      String
+  profile   Json?
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([email, role, intent])
+  @@index([expiresAt])
+}

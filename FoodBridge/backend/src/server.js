@@ -399,7 +399,7 @@ async function requestOtp(res, body) {
           organizationName: "",
         };
 
-  const { code } = createOtp({ email, role, intent, profile });
+  const { code } = await createOtp({ email, role, intent, profile });
 
   try {
     const mailResult = await sendMail({
@@ -449,7 +449,7 @@ async function verifyOtpCode(res, body) {
     return;
   }
 
-  const result = verifyOtp({ email, role, intent, otp });
+  const result = await verifyOtp({ email, role, intent, otp });
 
   if (!result.ok) {
     sendJson(res, 400, { error: result.error });

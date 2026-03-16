@@ -13,6 +13,7 @@
     "build": "npm run build --workspace frontend",
     "start": "npm run start --workspace frontend",
     "lint": "npm run lint --workspace frontend",
+    "postinstall": "npx prisma generate --schema database/prisma/schema.prisma",
     "prisma:generate": "npx prisma generate --schema database/prisma/schema.prisma",
     "prisma:migrate": "npx prisma migrate dev --schema database/prisma/schema.prisma"
   },

@@ -1,6 +1,5 @@
 const { config } = require("./config");
-
-const otpStore = new Map();
+const { prisma } = require("./prisma");
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -14,7 +13,7 @@ function isValidRole(role) {
   return role === "donor" || role === "ngo" || role === "delivery" || role === "admin";
 }
 
-function createOtp({ email, role, intent, profile }) {
+async function createOtp({ email, role, intent, profile }) {
   if (!isValidRole(role)) {
     throw new Error("Invalid role");
   }
@@ -22,40 +21,80 @@ function createOtp({ email, role, intent, profile }) {
   const normalizedEmail = normalizeEmail(email);
   const code = generateOtp();
   const ttlMs = (config.otpTtlMinutes || 10) * 60 * 1000;
+  const expiresAt = new Date(Date.now() + ttlMs);
 
-  otpStore.set(normalizedEmail, {
-    code,
-    role,
-    intent,
-    profile,
-    expiresAt: Date.now() + ttlMs,
+  await prisma.otpCode.upsert({
+    where: {
+      email_role_intent: {
+        email: normalizedEmail,
+        role,
+        intent,
+      },
+    },
+    update: {
+      code,
+      profile: profile || null,
+      expiresAt,
+      createdAt: new Date(),
+    },
+    create: {
+      email: normalizedEmail,
+      role,
+      intent,
+      code,
+      profile: profile || null,
+      expiresAt,
+    },
   });
 
   return { code, email: normalizedEmail };
 }
 
-function verifyOtp({ email, role, intent, otp }) {
+async function verifyOtp({ email, role, intent, otp }) {
   const normalizedEmail = normalizeEmail(email);
-  const record = otpStore.get(normalizedEmail);
+  const providedOtp = String(otp || "").trim();
+
+  const record = await prisma.otpCode.findUnique({
+    where: {
+      email_role_intent: {
+        email: normalizedEmail,
+        role,
+        intent,
+      },
+    },
+  });
 
   if (!record) {
     return { ok: false, error: "OTP not found. Please request a new code." };
   }
 
-  if (record.expiresAt < Date.now()) {
-    otpStore.delete(normalizedEmail);
+  if (record.expiresAt && record.expiresAt.getTime() < Date.now()) {
+    await prisma.otpCode.delete({
+      where: {
+        email_role_intent: {
+          email: normalizedEmail,
+          role,
+          intent,
+        },
+      },
+    });
     return { ok: false, error: "OTP expired. Please request a new code." };
   }
 
-  if (record.role !== role || record.intent !== intent) {
-    return { ok: false, error: "OTP is invalid for this request." };
-  }
-
-  if (record.code !== String(otp || "").trim()) {
+  if (record.code !== providedOtp) {
     return { ok: false, error: "Incorrect OTP. Please try again." };
   }
 
-  otpStore.delete(normalizedEmail);
+  await prisma.otpCode.delete({
+    where: {
+      email_role_intent: {
+        email: normalizedEmail,
+        role,
+        intent,
+      },
+    },
+  });
+
   return { ok: true, profile: record.profile, role: record.role, intent: record.intent };
 }
 
