@@ -41,6 +41,17 @@ function normalizeBackendUrl(value: string | undefined) {
 
 const backendUrl = normalizeBackendUrl(process.env.BACKEND_URL);
 
+function parseAllowlist(value: string | undefined) {
+  return String(value || "")
+    .split(",")
+    .map((entry) => entry.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function isTruthy(value: string | undefined) {
+  return String(value || "").trim().toLowerCase() === "true";
+}
+
 export async function POST(request: Request) {
   const parsed = loginSchema.safeParse(await request.json().catch(() => ({})));
   if (!parsed.success) {
@@ -48,6 +59,84 @@ export async function POST(request: Request) {
   }
 
   try {
+    const email = normalizeEmail(parsed.data.email);
+    const password = parsed.data.password;
+
+    const demoLoginEnabled = isTruthy(process.env.DEMO_LOGIN_BYPASS);
+
+    const demoAdminEnabled = isTruthy(process.env.DEMO_ADMIN_BYPASS);
+    const demoAdminPassword = String(process.env.DEMO_ADMIN_PASSWORD || "");
+    const demoAdminAnyPassword = isTruthy(process.env.DEMO_ADMIN_ANY_PASSWORD);
+    const demoAdminAllowlist = parseAllowlist(process.env.DEMO_ADMIN_EMAIL_ALLOWLIST);
+
+    if (demoAdminEnabled) {
+      const isAllowed =
+        demoAdminAllowlist.length > 0 ? demoAdminAllowlist.includes(email) : email.includes("admin");
+
+      const passwordOk =
+        demoAdminAnyPassword ? true : Boolean(demoAdminPassword) && password === demoAdminPassword;
+
+      if (isAllowed && passwordOk) {
+        const dbRole = "ADMIN" as const;
+        const session = {
+          userId: email,
+          dbRole,
+          role: "admin" as const,
+          name: "Admin",
+          email,
+          phone: "",
+          password: "",
+          organizationName: "",
+          onboardingCompleted: true,
+          profile: {},
+        } as const;
+
+        const token = createSessionToken(session);
+        setSession(session);
+
+        return NextResponse.json(
+          {
+            ok: true,
+            demoBypass: true,
+            role: dbRole,
+            token,
+          },
+          { status: 200 }
+        );
+      }
+    }
+
+    if (demoLoginEnabled) {
+      const uiRole = email.includes("admin") ? "admin" : String(parsed.data.role || "donor");
+      const dbRole = toDbRole(uiRole) as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
+
+      const session = {
+        userId: email,
+        dbRole,
+        role: toUiRole(dbRole),
+        name: email.split("@")[0] || "User",
+        email,
+        phone: "",
+        password: "",
+        organizationName: "",
+        onboardingCompleted: true,
+        profile: {},
+      } as const;
+
+      const token = createSessionToken(session);
+      setSession(session);
+
+      return NextResponse.json(
+        {
+          ok: true,
+          demoBypass: true,
+          role: dbRole,
+          token,
+        },
+        { status: 200 }
+      );
+    }
+
     const response = await fetch(`${backendUrl}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,10 +150,9 @@ export async function POST(request: Request) {
     }
 
     if (!data?.session?.email) {
-      return NextResponse.json({ error: "Login failed." }, { status: 500 });
+      return NextResponse.json({ error: "Login failed." }, { status: 401 });
     }
 
-    const email = normalizeEmail(data.session.email);
     const uiRole = String(data.session.role || parsed.data.role || "donor");
     const dbRole = toDbRole(uiRole) as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
 
@@ -93,6 +181,6 @@ export async function POST(request: Request) {
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("POST /api/auth/login failed:", error);
-    return NextResponse.json({ error: "Login failed (server configuration/database error)." }, { status: 500 });
+    return NextResponse.json({ error: "Login failed. Please try again." }, { status: 401 });
   }
 }
