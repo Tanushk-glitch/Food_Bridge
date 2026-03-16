@@ -6,6 +6,8 @@ const { URL } = require("url");
 const { config } = require("./config");
 const { prisma } = require("./prisma");
 const { activeDonations } = require("./demo-data");
+const { sendMail } = require("./mailer");
+const { createOtp, verifyOtp, isValidRole, normalizeEmail } = require("./otp-store");
 
 function sendJson(res, statusCode, payload) {
   res.writeHead(statusCode, {
@@ -114,6 +116,16 @@ async function createDonation(res, body) {
       },
     });
 
+    try {
+      await sendMail({
+        to: donorId,
+        subject: "Donation posted on FoodBridge",
+        text: `Thanks for posting a donation!\n\nFood: ${foodType}\nQuantity: ${quantity}\nExpiry: ${expiryTime}\nLocation: ${location}\n\nWe will notify you once an NGO accepts it.`,
+      });
+    } catch (error) {
+      console.warn("Failed to send donation confirmation email:", error);
+    }
+
     sendJson(res, 201, { donation });
   } catch (error) {
     console.error("Error creating donation:", error);
@@ -148,6 +160,21 @@ async function acceptDonation(res, body) {
         ngoId,
       },
     });
+
+    try {
+      await sendMail({
+        to: donorId,
+        subject: "Your donation was accepted",
+        text: `Good news! An NGO accepted your donation.\n\nDonation ID: ${donationId}\nNGO: ${ngoId}`,
+      });
+      await sendMail({
+        to: ngoId,
+        subject: "Donation accepted",
+        text: `You have accepted a donation.\n\nDonation ID: ${donationId}`,
+      });
+    } catch (error) {
+      console.warn("Failed to send acceptance email:", error);
+    }
 
     sendJson(res, 200, { donation });
   } catch (error) {
@@ -217,6 +244,96 @@ async function getDeliveryRequests(res) {
   }
 }
 
+async function requestOtp(res, body) {
+  const email = normalizeEmail(body.email);
+  const role = String(body.role || "");
+  const intent = body.intent === "signup" ? "signup" : "login";
+
+  if (!email) {
+    sendJson(res, 400, { error: "Email is required" });
+    return;
+  }
+
+  if (!isValidRole(role)) {
+    sendJson(res, 400, { error: "Invalid role" });
+    return;
+  }
+
+  const profile =
+    intent === "signup"
+      ? {
+          name: String(body.name || email.split("@")[0]),
+          email,
+          phone: String(body.phone || ""),
+          password: String(body.password || "otp-signup"),
+          organizationName: String(body.organizationName || ""),
+        }
+      : {
+          name: email.split("@")[0],
+          email,
+          phone: "+91 90000 00000",
+          password: "otp-login",
+          organizationName: "",
+        };
+
+  const { code } = createOtp({ email, role, intent, profile });
+
+  try {
+    const mailResult = await sendMail({
+      to: email,
+      subject: "Your FoodBridge verification code",
+      text: `Your FoodBridge verification code is ${code}.\n\nThis code expires in ${config.otpTtlMinutes} minutes.`,
+    });
+
+    if (mailResult.skipped) {
+      console.warn("OTP email skipped: SMTP not configured.");
+      sendJson(res, 500, { error: "SMTP not configured. Unable to send OTP." });
+      return;
+    }
+  } catch (error) {
+    const message = error && error.message ? error.message : "SMTP error";
+    console.error("OTP email failed:", error);
+    sendJson(res, 500, { error: `Unable to send OTP: ${message}` });
+    return;
+  }
+
+  sendJson(res, 200, { ok: true });
+}
+
+async function verifyOtpCode(res, body) {
+  const email = normalizeEmail(body.email);
+  const role = String(body.role || "");
+  const intent = body.intent === "signup" ? "signup" : "login";
+  const otp = String(body.otp || "");
+
+  if (!email || !otp) {
+    sendJson(res, 400, { error: "Email and OTP are required" });
+    return;
+  }
+
+  if (!isValidRole(role)) {
+    sendJson(res, 400, { error: "Invalid role" });
+    return;
+  }
+
+  const result = verifyOtp({ email, role, intent, otp });
+
+  if (!result.ok) {
+    sendJson(res, 400, { error: result.error });
+    return;
+  }
+
+  sendJson(res, 200, {
+    ok: true,
+    session: {
+      role,
+      ...result.profile,
+      onboardingCompleted: intent === "login",
+      profile: {},
+    },
+  });
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
@@ -254,6 +371,16 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "POST") {
       const body = await readJsonBody(req);
 
+      if (url.pathname === "/api/auth/request-otp") {
+        await requestOtp(res, body);
+        return;
+      }
+
+      if (url.pathname === "/api/auth/verify-otp") {
+        await verifyOtpCode(res, body);
+        return;
+      }
+
       if (url.pathname === "/api/donations/create") {
         await createDonation(res, body);
         return;
@@ -284,6 +411,8 @@ const server = http.createServer(async (req, res) => {
     }
 
     if ([
+      "/api/auth/request-otp",
+      "/api/auth/verify-otp",
       "/api/donations/create",
       "/api/donations/accept",
       "/api/donations/pickup",
