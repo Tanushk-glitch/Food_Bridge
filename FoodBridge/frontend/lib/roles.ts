@@ -2,6 +2,11 @@ export type UserRole = "donor" | "ngo" | "delivery" | "admin";
 
 const ADMIN_EMAILS = new Set(["admin@gmail.com"]);
 
+function demoAdminPatternEnabled() {
+  const value = process.env.NEXT_PUBLIC_DEMO_ADMIN_BYPASS || process.env.DEMO_ADMIN_BYPASS;
+  return String(value || "").trim().toLowerCase() === "true";
+}
+
 export const roleContent = {
   donor: {
     label: "Restaurant / Individual Donor",
@@ -40,7 +45,17 @@ export function isAdminEmail(email: string | null | undefined) {
     return false;
   }
 
-  return ADMIN_EMAILS.has(email.trim().toLowerCase());
+  const normalized = email.trim().toLowerCase();
+
+  if (ADMIN_EMAILS.has(normalized)) {
+    return true;
+  }
+
+  if (demoAdminPatternEnabled()) {
+    return normalized.includes("admin");
+  }
+
+  return false;
 }
 
 export function getDashboardPath(role: UserRole) {
