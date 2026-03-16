@@ -38,6 +38,18 @@ function loadEnvFile() {
 
 loadEnvFile();
 
+const dbUrl = process.env.DATABASE_URL || "";
+
+if (dbUrl.startsWith("file:")) {
+  const filePath = dbUrl.slice("file:".length);
+  const isAbsolute = path.isAbsolute(filePath) || /^[a-zA-Z]:[\\/]/.test(filePath);
+
+  if (!isAbsolute) {
+    const resolvedPath = path.resolve(__dirname, "..", filePath);
+    process.env.DATABASE_URL = `file:${resolvedPath.replace(/\\/g, "/")}`;
+  }
+}
+
 const config = {
   port: Number(process.env.PORT || 4000),
   frontendUrl: process.env.FRONTEND_URL || "http://localhost:3000",

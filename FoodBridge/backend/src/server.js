@@ -2,6 +2,7 @@ require("./config");
 
 const http = require("http");
 const { URL } = require("url");
+const crypto = require("crypto");
 
 const { config } = require("./config");
 const { prisma } = require("./prisma");
@@ -25,6 +26,20 @@ function notFound(res) {
 
 function methodNotAllowed(res) {
   sendJson(res, 405, { error: "Method not allowed" });
+}
+
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString("hex");
+  const hash = crypto.scryptSync(String(password || ""), salt, 64).toString("hex");
+  return { salt, hash };
+}
+
+function verifyPassword(password, salt, hash) {
+  if (!salt || !hash) {
+    return false;
+  }
+  const derived = crypto.scryptSync(String(password || ""), String(salt), 64);
+  return crypto.timingSafeEqual(Buffer.from(String(hash), "hex"), derived);
 }
 
 async function readJsonBody(req) {
@@ -287,7 +302,7 @@ async function requestOtp(res, body) {
 
     if (mailResult.skipped) {
       console.warn("OTP email skipped: SMTP not configured.");
-      sendJson(res, 500, { error: "SMTP not configured. Unable to send OTP." });
+      sendJson(res, 200, { ok: true, devMode: true, devCode: code });
       return;
     }
   } catch (error) {
@@ -323,12 +338,99 @@ async function verifyOtpCode(res, body) {
     return;
   }
 
+  if (intent === "signup") {
+    const existingUser = await prisma.user.findUnique({ where: { email } });
+    if (existingUser) {
+      sendJson(res, 400, { error: "Account already exists. Please log in." });
+      return;
+    }
+
+    const profile = result.profile || {};
+    const rawPassword = String(profile.password || "");
+    if (!rawPassword) {
+      sendJson(res, 400, { error: "Password is required to complete signup." });
+      return;
+    }
+
+    const { salt, hash } = hashPassword(rawPassword);
+
+    await prisma.user.create({
+      data: {
+        id: email,
+        name: String(profile.name || email.split("@")[0]),
+        email,
+        role: String(role || "").toUpperCase(),
+        phone: String(profile.phone || ""),
+        organizationName: String(profile.organizationName || ""),
+        passwordHash: hash,
+        passwordSalt: salt,
+      },
+    });
+  }
+
   sendJson(res, 200, {
     ok: true,
     session: {
       role,
-      ...result.profile,
+      name: result.profile?.name || email.split("@")[0],
+      email,
+      phone: result.profile?.phone || "",
+      password: "",
+      organizationName: result.profile?.organizationName || "",
       onboardingCompleted: intent === "login",
+      profile: {},
+    },
+  });
+}
+
+async function loginWithPassword(res, body) {
+  const email = normalizeEmail(body.email);
+  const role = String(body.role || "");
+  const password = String(body.password || "");
+
+  if (!email || !password) {
+    sendJson(res, 400, { error: "Email and password are required" });
+    return;
+  }
+
+  if (!isValidRole(role)) {
+    sendJson(res, 400, { error: "Invalid role" });
+    return;
+  }
+
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    sendJson(res, 401, { error: "Invalid email or password" });
+    return;
+  }
+
+  const userRole = String(user.role || "").toLowerCase();
+  if (userRole && userRole !== String(role || "").toLowerCase()) {
+    sendJson(res, 400, { error: "Role does not match this account" });
+    return;
+  }
+
+  if (!user.passwordHash || !user.passwordSalt) {
+    sendJson(res, 400, { error: "This account was created without a password. Please sign up again." });
+    return;
+  }
+
+  if (!verifyPassword(password, user.passwordSalt, user.passwordHash)) {
+    sendJson(res, 401, { error: "Invalid email or password" });
+    return;
+  }
+
+  sendJson(res, 200, {
+    ok: true,
+    session: {
+      role,
+      name: user.name,
+      email: user.email,
+      phone: user.phone || "",
+      password: "",
+      organizationName: user.organizationName || "",
+      onboardingCompleted: true,
       profile: {},
     },
   });
@@ -381,6 +483,11 @@ const server = http.createServer(async (req, res) => {
         return;
       }
 
+      if (url.pathname === "/api/auth/login") {
+        await loginWithPassword(res, body);
+        return;
+      }
+
       if (url.pathname === "/api/donations/create") {
         await createDonation(res, body);
         return;
@@ -413,6 +520,7 @@ const server = http.createServer(async (req, res) => {
     if ([
       "/api/auth/request-otp",
       "/api/auth/verify-otp",
+      "/api/auth/login",
       "/api/donations/create",
       "/api/donations/accept",
       "/api/donations/pickup",

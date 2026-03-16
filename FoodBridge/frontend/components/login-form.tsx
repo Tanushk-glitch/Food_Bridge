@@ -14,15 +14,11 @@ type LoginFormProps = {
 };
 
 export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
-  const [step, setStep] = useState<"details" | "otp">("details");
-  const [pendingEmail, setPendingEmail] = useState("");
-  const [pendingRole, setPendingRole] = useState<UserRole>(initialRole);
-  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  async function handleRequestOtp(event: React.FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     setIsSubmitting(true);
@@ -30,52 +26,23 @@ export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
     const formData = new FormData(event.currentTarget);
     const role = String(formData.get("role") || "donor") as UserRole;
     const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "");
 
-    const response = await fetch("/api/auth/request-otp", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ intent: "login", role, email })
+      body: JSON.stringify({ role, email, password })
     });
 
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      setError(data.error || "Unable to send OTP. Please try again.");
+      setError(data.error || "Unable to log in. Please try again.");
       setIsSubmitting(false);
       return;
     }
 
-    setPendingEmail(email);
-    setPendingRole(role);
-    setStep("otp");
-    setIsSubmitting(false);
-  }
-
-  async function handleVerifyOtp(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    const response = await fetch("/api/auth/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        intent: "login",
-        role: pendingRole,
-        email: pendingEmail,
-        otp
-      })
-    });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      setError(data.error || "Invalid OTP. Please try again.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    const dashboardPath = roleContent[pendingRole]?.dashboardPath || "/dashboard";
+    const dashboardPath = roleContent[role]?.dashboardPath || "/dashboard";
     router.push(dashboardPath);
   }
 
@@ -84,64 +51,40 @@ export function LoginForm({ initialRole = "donor" }: LoginFormProps) {
       <div className="rounded-3xl border border-border bg-card p-8 shadow-soft">
         <h3 className="font-display text-xl font-extrabold">Login to your FoodBridge account</h3>
         <p className="mt-2 text-sm font-medium text-muted-foreground">Choose your role context to jump back into your dashboard.</p>
-        {step === "details" ? (
-          <form onSubmit={handleRequestOtp} className="mt-6 grid gap-4">
-            <div>
-              <label className="mb-2 block text-sm font-bold">Role</label>
-              <div className="grid gap-3 sm:grid-cols-3">
-                {publicRoles.map((role) => (
-                  <label key={role} className="cursor-pointer rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:shadow-sm">
-                    <input defaultChecked={initialRole === role} className="sr-only" type="radio" name="role" value={role} />
-                    <p className="font-extrabold">{roleContent[role].shortLabel}</p>
-                    <p className="mt-1 text-sm font-medium text-muted-foreground">{roleContent[role].description}</p>
-                  </label>
-                ))}
-              </div>
+        <form onSubmit={handleLogin} className="mt-6 grid gap-4">
+          <div>
+            <label className="mb-2 block text-sm font-bold">Role</label>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {publicRoles.map((role) => (
+                <label key={role} className="cursor-pointer rounded-2xl border border-border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:shadow-sm">
+                  <input defaultChecked={initialRole === role} className="sr-only" type="radio" name="role" value={role} />
+                  <p className="font-extrabold">{roleContent[role].shortLabel}</p>
+                  <p className="mt-1 text-sm font-medium text-muted-foreground">{roleContent[role].description}</p>
+                </label>
+              ))}
             </div>
-            <div>
-              <label className="mb-2 block text-sm font-bold">Email</label>
-              <Input name="email" type="email" placeholder="name@example.com" required />
-            </div>
-            {error && <p className="text-sm font-medium text-destructive">{error}</p>}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm font-medium text-muted-foreground">
-                Need an account?{" "}
-                <Link href="/signup" className="font-bold text-primary">
-                  Sign up
-                </Link>
-              </p>
-              <Button type="submit" size="lg" disabled={isSubmitting}>
-                {isSubmitting ? "Sending OTP..." : "Send OTP"}
-              </Button>
-            </div>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOtp} className="mt-6 grid gap-4">
-            <div className="rounded-2xl border border-border bg-muted/40 p-4 text-sm">
-              <p className="font-semibold">We sent a 5-digit code to {pendingEmail}.</p>
-              <p className="text-muted-foreground">Enter it below to access your dashboard.</p>
-            </div>
-            <div>
-              <label className="mb-2 block text-sm font-bold">Verification code</label>
-              <Input
-                value={otp}
-                onChange={(event) => setOtp(event.target.value.replace(/\D/g, "").slice(0, 5))}
-                inputMode="numeric"
-                placeholder="12345"
-                required
-              />
-            </div>
-            {error && <p className="text-sm font-medium text-destructive">{error}</p>}
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <Button type="button" variant="ghost" onClick={() => setStep("details")}>
-                Edit details
-              </Button>
-              <Button type="submit" size="lg" disabled={isSubmitting || otp.length !== 5}>
-                {isSubmitting ? "Verifying..." : "Verify & login"}
-              </Button>
-            </div>
-          </form>
-        )}
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-bold">Email</label>
+            <Input name="email" type="email" placeholder="name@example.com" required />
+          </div>
+          <div>
+            <label className="mb-2 block text-sm font-bold">Password</label>
+            <Input name="password" type="password" placeholder="Your account password" required />
+          </div>
+          {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm font-medium text-muted-foreground">
+              Need an account?{" "}
+              <Link href="/signup" className="font-bold text-primary">
+                Sign up
+              </Link>
+            </p>
+            <Button type="submit" size="lg" disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Login"}
+            </Button>
+          </div>
+        </form>
       </div>
 
       <div className="rounded-3xl border border-border bg-foreground p-8 text-background">

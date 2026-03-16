@@ -1,0 +1,9 @@
+FoodBridge backend listening on http://localhost:4000
+OTP email skipped: SMTP not configured.
+OTP email skipped: SMTP not configured.
+OTP email skipped: SMTP not configured.
+Unhandled server error: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at readJsonBody (C:\repo\Food_Bridge\FoodBridge\backend\src\server.js:53:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Server.<anonymous> (C:\repo\Food_Bridge\FoodBridge\backend\src\server.js:474:20)
