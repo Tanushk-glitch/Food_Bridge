@@ -4,7 +4,6 @@ import { z } from "zod";
 
 import { createSessionToken, setSession } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/roles";
-import { prisma } from "@/lib/prisma";
 
 function normalizeBackendUrl(value: string | undefined) {
   const trimmed = String(value || "").trim().replace(/\/+$/, "");
@@ -35,6 +34,14 @@ function toUiRole(dbRole: string) {
   return "donor";
 }
 
+function toDbRole(uiRole: string) {
+  const lower = String(uiRole || "").toLowerCase();
+  if (lower === "admin") return "ADMIN";
+  if (lower === "ngo") return "NGO";
+  if (lower === "delivery") return "DELIVERY";
+  return "DONOR";
+}
+
 export async function POST(request: Request) {
   const parsed = verifyOtpSchema.safeParse(await request.json().catch(() => ({})));
   if (!parsed.success) {
@@ -51,28 +58,23 @@ export async function POST(request: Request) {
 
   if (response.ok && data?.session) {
     const email = normalizeEmail(data.session.email);
-    const user = await prisma.user.findUnique({ where: { email } });
+    const uiRole = String(data.session.role || parsed.data.role || "donor");
+    const dbRole = toDbRole(uiRole) as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
 
-    if (!user) {
-      return NextResponse.json({ error: "User record not found after OTP verification." }, { status: 500 });
-    }
-
-    const dbRole = String(user.role || "").toUpperCase();
-
-    if (dbRole === "ADMIN" && !isAdminEmail(user.email)) {
+    if (dbRole === "ADMIN" && !isAdminEmail(email)) {
       return NextResponse.json({ error: "Admin access is restricted to the fixed admin account." }, { status: 403 });
     }
 
     const session = {
-      userId: user.id,
-      dbRole: dbRole as "ADMIN" | "DONOR" | "NGO" | "DELIVERY",
+      userId: email,
+      dbRole,
       role: toUiRole(dbRole),
-      name: user.name,
-      email: user.email,
-      phone: user.phone || "",
+      name: String(data.session.name || email.split("@")[0]),
+      email,
+      phone: String(data.session.phone || ""),
       password: "",
-      organizationName: user.organizationName || "",
-      onboardingCompleted: true,
+      organizationName: String(data.session.organizationName || ""),
+      onboardingCompleted: Boolean(data.session.onboardingCompleted),
       profile: {},
     } as const;
 

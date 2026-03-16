@@ -1,13 +1,9 @@
 import { NextResponse } from "next/server";
 
-import crypto from "node:crypto";
-
-import bcrypt from "bcryptjs";
 import { z } from "zod";
 
 import { createSessionToken, setSession } from "@/lib/auth";
 import { isAdminEmail } from "@/lib/roles";
-import { prisma } from "@/lib/prisma";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -15,20 +11,8 @@ const loginSchema = z.object({
   role: z.enum(["donor", "ngo", "delivery", "admin"]).optional(),
 });
 
-const FIXED_ADMIN_EMAIL = "admin@gmail.com";
-const FIXED_ADMIN_PASSWORD = "admin@123";
-
 function normalizeEmail(value: string) {
   return String(value || "").trim().toLowerCase();
-}
-
-function verifyLegacyScryptPassword(password: string, salt: string, hash: string) {
-  try {
-    const derived = crypto.scryptSync(String(password || ""), String(salt || ""), 64);
-    return crypto.timingSafeEqual(Buffer.from(String(hash), "hex"), derived);
-  } catch {
-    return false;
-  }
 }
 
 function toUiRole(dbRole: string) {
@@ -40,6 +24,23 @@ function toUiRole(dbRole: string) {
   return "donor";
 }
 
+function toDbRole(uiRole: string) {
+  const lower = String(uiRole || "").toLowerCase();
+  if (lower === "admin") return "ADMIN";
+  if (lower === "ngo") return "NGO";
+  if (lower === "delivery") return "DELIVERY";
+  return "DONOR";
+}
+
+function normalizeBackendUrl(value: string | undefined) {
+  const trimmed = String(value || "").trim().replace(/\/+$/, "");
+  if (!trimmed) return "http://localhost:4000";
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  return `https://${trimmed}`;
+}
+
+const backendUrl = normalizeBackendUrl(process.env.BACKEND_URL);
+
 export async function POST(request: Request) {
   const parsed = loginSchema.safeParse(await request.json().catch(() => ({})));
   if (!parsed.success) {
@@ -47,96 +48,49 @@ export async function POST(request: Request) {
   }
 
   try {
-    const email = normalizeEmail(parsed.data.email);
-    const password = parsed.data.password;
+    const response = await fetch(`${backendUrl}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(parsed.data),
+    });
 
-    const isFixedAdmin = email === normalizeEmail(FIXED_ADMIN_EMAIL);
+    const data = await response.json().catch(() => ({}));
 
-    if (isFixedAdmin) {
-      const existing = await prisma.user.findUnique({ where: { email } });
-      if (!existing) {
-        const passwordHashBcrypt = await bcrypt.hash(FIXED_ADMIN_PASSWORD, 10);
-        await prisma.user.create({
-          data: {
-            id: email,
-            email,
-            name: "Admin",
-            role: "ADMIN",
-            verified: true,
-            status: "active",
-            passwordHashBcrypt,
-          },
-        });
-      }
+    if (!response.ok) {
+      return NextResponse.json(data, { status: response.status });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+    if (!data?.session?.email) {
+      return NextResponse.json({ error: "Login failed." }, { status: 500 });
     }
 
-    if (String(user.status || "").toLowerCase() === "suspended") {
-      return NextResponse.json({ error: "Account suspended. Please contact support." }, { status: 403 });
-    }
+    const email = normalizeEmail(data.session.email);
+    const uiRole = String(data.session.role || parsed.data.role || "donor");
+    const dbRole = toDbRole(uiRole) as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
 
-    if (String(user.role || "").toUpperCase() === "ADMIN" && !isAdminEmail(user.email)) {
+    if (dbRole === "ADMIN" && !isAdminEmail(email)) {
       return NextResponse.json({ error: "Admin access is restricted to the fixed admin account." }, { status: 403 });
     }
 
-    let ok = false;
-
-    if (user.passwordHashBcrypt) {
-      ok = await bcrypt.compare(password, user.passwordHashBcrypt);
-    } else if (user.passwordHash && user.passwordSalt) {
-      ok = verifyLegacyScryptPassword(password, user.passwordSalt, user.passwordHash);
-      if (ok) {
-        const upgraded = await bcrypt.hash(password, 10);
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { passwordHashBcrypt: upgraded },
-        });
-      }
-    }
-
-    if (!ok) {
-      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
-    }
-
-    const dbRole = String(user.role || "").toUpperCase() as "ADMIN" | "DONOR" | "NGO" | "DELIVERY";
     const session = {
-      userId: user.id,
+      userId: email,
       dbRole,
       role: toUiRole(dbRole),
-      name: user.name,
-      email: user.email,
-      phone: user.phone || "",
+      name: String(data.session.name || email.split("@")[0]),
+      email,
+      phone: String(data.session.phone || ""),
       password: "",
-      organizationName: user.organizationName || "",
+      organizationName: String(data.session.organizationName || ""),
       onboardingCompleted: true,
       profile: {},
     } as const;
 
     const token = createSessionToken(session);
     setSession(session);
+    data.token = token;
+    data.role = dbRole;
 
-    return NextResponse.json(
-      {
-        ok: true,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: dbRole,
-          city: user.city || "",
-          verified: Boolean(user.verified),
-          status: String(user.status || "active"),
-          createdAt: user.createdAt,
-        },
-        role: dbRole,
-        token,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     console.error("POST /api/auth/login failed:", error);
     return NextResponse.json({ error: "Login failed (server configuration/database error)." }, { status: 500 });
