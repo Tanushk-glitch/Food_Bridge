@@ -19,16 +19,18 @@ type DashboardNavItem = {
 const linkGroups: Record<UserRole, DashboardNavItem[]> = {
   donor: [
     { href: "/dashboard/donor", label: "Dashboard", icon: Building2 },
-    { href: "/dashboard/donor#post-donation", label: "Post Donation", icon: ArrowRightLeft },
-    { href: "/dashboard/donor#active-donations", label: "Active Donations", icon: LayoutDashboard },
-    { href: "/dashboard/donor#donation-history", label: "Donation History", icon: LayoutDashboard },
-    { href: "/impact", label: "Impact", icon: LayoutDashboard }
+    { href: "/dashboard/donor/post-donation", label: "Post Donation", icon: ArrowRightLeft },
+    { href: "/dashboard/donor/active-donations", label: "Active Donations", icon: LayoutDashboard },
+    { href: "/dashboard/donor/donation-history", label: "Donation History", icon: LayoutDashboard },
+    { href: "/dashboard/donor/impact", label: "Impact", icon: LayoutDashboard },
+    { href: "/dashboard/donor/settings", label: "Settings", icon: LayoutDashboard }
   ],
   ngo: [
     { href: "/dashboard/ngo", label: "NGO Dashboard", icon: HeartHandshake },
-    { href: "/dashboard/ngo#nearby", label: "Browse Donations", icon: LayoutDashboard },
-    { href: "/dashboard/ngo#tracking", label: "Distribution Tracking", icon: ArrowRightLeft },
-    { href: "/impact", label: "Impact", icon: LayoutDashboard }
+    { href: "/dashboard/ngo/browse-donations", label: "Browse Donations", icon: LayoutDashboard },
+    { href: "/dashboard/ngo/distribution-tracking", label: "Distribution Tracking", icon: ArrowRightLeft },
+    { href: "/dashboard/ngo/impact", label: "Impact", icon: LayoutDashboard },
+    { href: "/dashboard/ngo/settings", label: "Settings", icon: LayoutDashboard }
   ],
   delivery: [
     { href: "/dashboard/delivery", label: "Delivery Dashboard", icon: Bike },
