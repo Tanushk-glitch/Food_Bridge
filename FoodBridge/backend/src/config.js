@@ -57,6 +57,14 @@ const config = {
     email: process.env.ADMIN_EMAIL || "admin@gmail.com",
     password: process.env.ADMIN_PASSWORD || "admin@123",
   },
+  demoAuth: {
+    enabled: (process.env.DEMO_LOGIN_BYPASS || "").toLowerCase() === "true",
+    password: process.env.DEMO_LOGIN_PASSWORD || "",
+    allowlist: String(process.env.DEMO_LOGIN_EMAIL_ALLOWLIST || "")
+      .split(",")
+      .map((value) => value.trim().toLowerCase())
+      .filter(Boolean),
+  },
   smtp: {
     enabled: (process.env.SMTP_ENABLED || "").toLowerCase() === "true",
     host: process.env.SMTP_HOST || "",

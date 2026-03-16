@@ -535,6 +535,32 @@ async function loginWithPassword(res, body) {
     return;
   }
 
+  if (
+    !isFixedAdmin &&
+    config.demoAuth?.enabled &&
+    config.demoAuth?.password &&
+    password === config.demoAuth.password &&
+    (Array.isArray(config.demoAuth.allowlist) && config.demoAuth.allowlist.length > 0
+      ? config.demoAuth.allowlist.includes(email)
+      : true)
+  ) {
+    sendJson(res, 200, {
+      ok: true,
+      demoBypass: true,
+      session: {
+        role,
+        name: user.name,
+        email: user.email,
+        phone: user.phone || "",
+        password: "",
+        organizationName: user.organizationName || "",
+        onboardingCompleted: true,
+        profile: {},
+      },
+    });
+    return;
+  }
+
   if (!user.passwordHash || !user.passwordSalt) {
     sendJson(res, 400, { error: "This account was created without a password. Please sign up again." });
     return;
